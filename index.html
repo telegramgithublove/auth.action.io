@@ -6,20 +6,28 @@
     <title>Обработка аутентификации</title>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            console.log("Страница загружена, начинаем обработку...");
+
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get('mode');
             const oobCode = urlParams.get('oobCode');
 
+            console.log("Извлеченные параметры:", { mode, oobCode });
+
             if (!mode || !oobCode) {
+                console.error("Ошибка: некорректная ссылка.");
                 alert("Ошибка: некорректная ссылка.");
                 return;
             }
 
             if (mode === "resetPassword") {
+                console.log("Режим: сброс пароля, перенаправление...");
                 window.location.href = `https://telegramgithublove.github.io/reset.github.io?oobCode=${oobCode}`;
             } else if (mode === "verifyEmail") {
+                console.log("Режим: подтверждение email, перенаправление...");
                 window.location.href = `https://telegramgithublove.github.io/email.github.io?oobCode=${oobCode}`;
             } else {
+                console.error("Ошибка: неизвестный тип действия.");
                 alert("Ошибка: неизвестный тип действия.");
             }
         });
@@ -38,11 +46,6 @@
 
         .container {
             text-align: center;
-        }
-
-        .logo {
-            width: 150px;
-            margin-bottom: 20px;
         }
 
         .message-box {
@@ -68,20 +71,6 @@
         .info-message {
             color: #666;
             margin-bottom: 20px;
-        }
-
-        .home-link {
-            display: inline-block;
-            background-color: #d32f2f;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-        .home-link:hover {
-            background-color: #b71c1c;
         }
     </style>
 </head>
