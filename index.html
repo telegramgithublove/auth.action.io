@@ -4,51 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Обработка аутентификации</title>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            console.log("Страница загружена, начинаем обработку...");
-            
-            const urlParams = new URLSearchParams(window.location.search);
-            const mode = urlParams.get('mode');
-            const oobCode = urlParams.get('oobCode');
-            const continueUrl = urlParams.get('continueUrl');
-            const apiKey = urlParams.get('apiKey');
-            const lang = urlParams.get('lang');
-
-            console.log("Полученные параметры:");
-            console.log("mode:", mode);
-            console.log("oobCode:", oobCode);
-            console.log("continueUrl:", continueUrl);
-            console.log("apiKey:", apiKey);
-            console.log("lang:", lang);
-
-            if (!mode || !oobCode) {
-                console.error("Ошибка: некорректная ссылка.");
-                alert("Ошибка: некорректная ссылка.");
-                return;
-            }
-
-            let redirectUrl = "";
-
-            if (mode === "resetPassword") {
-                redirectUrl = `https://telegramgithublove.github.io/reset.github.io?oobCode=${oobCode}`;
-            } else if (mode === "verifyEmail") {
-                redirectUrl = `https://telegramgithublove.github.io/email.github.io?oobCode=${oobCode}`;
-            } else {
-                console.error("Ошибка: неизвестный тип действия.");
-                alert("Ошибка: неизвестный тип действия.");
-                return;
-            }
-
-            // Если есть continueUrl, добавляем его
-            if (continueUrl) {
-                redirectUrl += `&continueUrl=${encodeURIComponent(continueUrl)}`;
-            }
-
-            console.log("Редирект на:", redirectUrl);
-            window.location.href = redirectUrl;
-        });
-    </script>
     <style>
         body {
             margin: 0;
@@ -60,11 +15,9 @@
             align-items: center;
             height: 100vh;
         }
-
         .container {
             text-align: center;
         }
-
         .message-box {
             background-color: #ffebee;
             border: 1px solid #f44336;
@@ -73,18 +26,15 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
         }
-
         .message-box:hover {
             transform: scale(1.05);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
-
         .success-message {
             color: #d32f2f;
             font-size: 24px;
             margin: 10px 0;
         }
-
         .info-message {
             color: #666;
             margin-bottom: 20px;
@@ -98,5 +48,45 @@
             <p class="info-message">Вы будете перенаправлены автоматически.</p>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("Страница загружена, начинаем обработку...");
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            const oobCode = urlParams.get('oobCode');
+            const continueUrl = urlParams.get('continueUrl');
+            const apiKey = urlParams.get('apiKey');
+            const lang = urlParams.get('lang');
+
+            console.log("Полученные параметры:", { mode, oobCode, continueUrl, apiKey, lang });
+
+            if (!mode || !oobCode) {
+                console.error("Ошибка: отсутствуют mode или oobCode.");
+                alert("Ошибка: некорректная ссылка.");
+                return;
+            }
+
+            let redirectUrl = "";
+
+            if (mode === "resetPassword") {
+                redirectUrl = `https://telegramgithublove.github.io/reset.github.io?mode=resetPassword&oobCode=${oobCode}`;
+            } else if (mode === "verifyEmail") {
+                redirectUrl = `https://telegramgithublove.github.io/email.github.io?mode=verifyEmail&oobCode=${oobCode}`;
+            } else {
+                console.error("Ошибка: неизвестный тип действия:", mode);
+                alert(`Ошибка: неизвестный тип действия (${mode}).`);
+                return;
+            }
+
+            if (continueUrl) {
+                redirectUrl += `&continueUrl=${encodeURIComponent(continueUrl)}`;
+            }
+
+            console.log("Редирект на:", redirectUrl);
+            window.location.href = redirectUrl;
+        });
+    </script>
 </body>
 </html>
