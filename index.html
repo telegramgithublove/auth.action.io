@@ -7,12 +7,20 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             console.log("Страница загружена, начинаем обработку...");
-
+            
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get('mode');
             const oobCode = urlParams.get('oobCode');
+            const continueUrl = urlParams.get('continueUrl');
+            const apiKey = urlParams.get('apiKey');
+            const lang = urlParams.get('lang');
 
-            console.log("Извлеченные параметры:", { mode, oobCode });
+            console.log("Полученные параметры:");
+            console.log("mode:", mode);
+            console.log("oobCode:", oobCode);
+            console.log("continueUrl:", continueUrl);
+            console.log("apiKey:", apiKey);
+            console.log("lang:", lang);
 
             if (!mode || !oobCode) {
                 console.error("Ошибка: некорректная ссылка.");
@@ -20,16 +28,25 @@
                 return;
             }
 
+            let redirectUrl = "";
+
             if (mode === "resetPassword") {
-                console.log("Режим: сброс пароля, перенаправление...");
-                window.location.href = `https://telegramgithublove.github.io/reset.github.io?oobCode=${oobCode}`;
+                redirectUrl = `https://telegramgithublove.github.io/reset.github.io?oobCode=${oobCode}`;
             } else if (mode === "verifyEmail") {
-                console.log("Режим: подтверждение email, перенаправление...");
-                window.location.href = `https://telegramgithublove.github.io/email.github.io?oobCode=${oobCode}`;
+                redirectUrl = `https://telegramgithublove.github.io/email.github.io?oobCode=${oobCode}`;
             } else {
                 console.error("Ошибка: неизвестный тип действия.");
                 alert("Ошибка: неизвестный тип действия.");
+                return;
             }
+
+            // Если есть continueUrl, добавляем его
+            if (continueUrl) {
+                redirectUrl += `&continueUrl=${encodeURIComponent(continueUrl)}`;
+            }
+
+            console.log("Редирект на:", redirectUrl);
+            window.location.href = redirectUrl;
         });
     </script>
     <style>
